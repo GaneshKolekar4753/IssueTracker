@@ -4,7 +4,7 @@ const app=express();
 
 const path=require('path');
 const expressLayouts=require('express-ejs-layouts');
-
+const db=require('./config/mongodb');
 //set static files
 app.use(express.static('./assets'));
 
