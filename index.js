@@ -3,14 +3,26 @@ const port=7000;
 const app=express();
 
 const path=require('path');
+const expressLayouts=require('express-ejs-layouts');
+
+//set static files
+app.use(express.static('./assets'));
+
+// use layouts
+app.use(expressLayouts);
+//extract styles and scripts from layout
+app.set('layout extractStyles',true);
+app.set('layout extractScripts',true);
 
 //use express router
 app.use('/',require('./routes/index'));
 
 //setup view engine(ejs)
 app.set('view engine','ejs');
-console.log(__dirname);
 app.set('views','./views');
+
+
+
 app.listen(port,function(err){
     if(err){
         console.log('Error in creating server',err);
