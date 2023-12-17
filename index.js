@@ -8,20 +8,20 @@ const db=require('./config/mongodb');
 //set static files
 app.use(express.static('./assets'));
 
-// use layouts
-app.use(expressLayouts);
-//extract styles and scripts from layout
-app.set('layout extractStyles',true);
-app.set('layout extractScripts',true);
-
-//use express router
-app.use('/',require('./routes/index'));
 
 //setup view engine(ejs)
 app.set('view engine','ejs');
 app.set('views','./views');
 
+// use layouts
+app.use(expressLayouts);
 
+// extract the style and script
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
+
+//use express router
+app.use('/',require('./routes/index'));
 
 app.listen(port,function(err){
     if(err){
