@@ -1,4 +1,18 @@
-<link rel="stylesheet" href="/css/project.css">
+<link rel="stylesheet" href="/css/project.css" />
 
+<!-- html code for show  the project details in project page -->
+<div class=" p-5">
+  <!-- add loop for projects -->
+  <div class="d-flex align-items-center container mt-2">
+    <div class="card container w-50 project-container">
+      <div class="card-body">
+        <h5 class="card-title bg-info text-light">Project Name:- <%= project.name %></h5>
+        <p class="card-text bg-sec">Project Details:-  <%= project.description %></p>
+        <p class="card-text">Project Author:-  <%= project.author %></p>
+      </div>
+    </div>
+  </div>
+</div>  
 
-
+<!-- include the issue page -->
+<%-include('./partials/_issuePage')%>
