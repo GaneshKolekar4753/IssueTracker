@@ -22,52 +22,36 @@ module.exports.createProject = async function (req, res) {
   }
 };
 
-// create Issue in DB
+//delet project
 
-module.exports.createIssue = async function (req, res) {
+module.exports.deletProject=async function(req,res){
   try {
-    let project = await Project.findById(req.params.id);
-    if (project) {
-      let issue = await Issue.create({
-        name: req.body.name,
-        description: req.body.description,
-        author: req.body.author,
-        labels: req.body.labels,
-      });
-      project.issues.push(issue);
-      if (!(typeof req.body.labels === "string")) {
-        for (let label of req.body.labels) {
-          let isPresent = project.labels.find((obj) => obj == label);
-          if (!isPresent) {
-            project.labels.push(label);
-          }
-        }
-      } else {
-        let isPresent = project.labels.find((obj) => obj == req.body.labels);
-        if (!isPresent) {
-          project.labels.push(req.body.labels);
-        }
+    let deletedProject = await Project.findByIdAndDelete(req.params.id);
+    if (deletedProject) {
+      //delete all issues to the project
+      let issues=await Issue.deleteMany({project:deletedProject._id});
+      if(issues){
+        console.log("success", "Project and Issue Deleted")
+        return res.redirect('back');
       }
-
-      await project.save();
-      console.log("success", "Issue Created");
-      return res.redirect("back");
-    } else {
-      console.log("plz add correct Project");
-      return res.redirect("back");
+        console.log("success", "Project Deleted but not issues")
+        return res.redirect('back');
     }
-  } catch (error) {
-    console.log("Error in Creating Issue", error);
-    return res.redirect("back");
-  }
-};
+} catch (error) {
+    console.log("error", error);
+    return res.redirect('back');
+}
+}
+
+
+
 
 //rendering project issue page
 module.exports.project = async function (req, res) {
   try {
     const project = await Project.findById(req.params.id).populate({
       path: "issues",
-  });
+    });
     if (project) {
       return res.render("project", {
         title: "Project Page",
